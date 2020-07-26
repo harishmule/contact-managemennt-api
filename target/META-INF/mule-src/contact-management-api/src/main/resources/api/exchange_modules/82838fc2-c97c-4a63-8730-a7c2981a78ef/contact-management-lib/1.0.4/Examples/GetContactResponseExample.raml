@@ -1,0 +1,29 @@
+#%RAML 1.0 NamedExample
+GetContactResponse:
+  displayName: Contact Response
+  value:
+    identification:
+      firstName: 'Bob'
+      lastName: 'Frederick'
+      dob: '06/21/1980'
+      gender: 'M'
+      title: 'Manager'
+    address: 
+      - 'type': 'home'
+        street: '123 main street'
+        city: 'Somewhere'
+        state: 'WV'
+        zipcode: 12345
+      - 'type': 'home'
+        number: 1234
+        street: '123 main street'
+        unit: '1 a'
+        city: 'Somewhere'
+        state: 'WV'
+        zipcode: 12345
+    communication: 
+      - 'type': 'email'
+        value: 'main@mule.com'
+        preferred: true
+      - 'type': 'cell'
+        value: '123223232'

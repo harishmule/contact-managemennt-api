@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	
+	<sub-flow name="update-contact" doc:id="81e98df7-d4cd-46d5-a404-c39771c6a4a2" >
+		<logger level="INFO" doc:name="Start" doc:id="03e03928-dd45-4d00-905a-1a8f19c59c97" message="#[attributes] - Update contact request"/>
+		<set-variable value="#[attributes.uriParams.contactId]" doc:name="Set contactId Variable" doc:id="04692e4c-430c-486d-a59d-2759702dc8c8" variableName="contactId" />
+		<ee:transform doc:name="Create Contact Request Payload" doc:id="f136c845-f75c-4157-a8ae-0c73f930f0af" >
+			<ee:message >
+				<ee:set-payload resource="mappings/requests/update-contact.dwl" />
+			</ee:message>
+			<ee:variables >
+			</ee:variables>
+		</ee:transform>
+		<db:update doc:name="Update Contact" doc:id="b55d9461-c96e-4838-8794-b7f7f4bba929" config-ref="Database_Config">
+			<db:sql >UPDATE contacts_management.contacts SET 
+ firstName=:firstName, 
+lastName=:lastName, 
+dob=:dob, 
+gender=:gender, 
+title=:title, 
+email=:email, 
+phone=:phone, 
+preferred=:preferred, 
+addressType=:addressType, 
+addressNumber=:addressNumber, 
+address=:address, 
+addressUnit=:addressUnit, 
+addressCity=:addressCity, 
+addressState=:addressState, 
+adressZipcode=:adressZipcode, 
+addressType1=:addressType1, 
+addressNumber1=:addressNumber1, 
+address1=:address1, 
+addressUnit1=:addressUnit1,
+ addressCity1=:addressCity1, 
+addressState1=:addressState1, 
+adressZipcode1=:adressZipcode
+ WHERE contactId=:contactId</db:sql>
+			<db:input-parameters ><![CDATA[#[payload]]]></db:input-parameters>
+		</db:update>
+		<ee:transform doc:name="Response" doc:id="73171c7b-7c3d-4f29-927f-2ad7d0a64985" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "contact" ++ " " ++ vars.contactId ++ " " ++ "updated"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End" doc:id="3d42d60c-4a6d-499e-9976-d817659b2860" message="#[payload] - Update contact Successful"/>
+	</sub-flow>
+	
+</mule>

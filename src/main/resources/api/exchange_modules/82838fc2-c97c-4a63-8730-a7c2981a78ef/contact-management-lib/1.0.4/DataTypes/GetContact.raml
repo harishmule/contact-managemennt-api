@@ -1,0 +1,76 @@
+#%RAML 1.0 DataType
+displayName: Contact information
+type: object
+description: This data types contains contact information
+properties:
+  identification:
+    type: object
+    properties:
+      firstName:
+        type: string
+        displayName: Person's first name
+      lastName:
+        type: string
+        displayName: Person's last name
+      dob:
+        type: string
+        displayName: Person's data of birth
+      gender:
+        type: string
+        displayName: Person's gender
+      title:
+        type: string
+        displayName: Person's title
+  address:
+    type: array
+    displayName: Contact address
+    items: 
+      properties:
+        type:
+          type: string
+          displayName: contact type
+        number?:
+          type: integer
+          displayName: contact number
+        street:
+          type: string
+          displayName: Street address
+        unit?:
+          type: string
+          displayName: Unit number
+        city:
+          type: string
+          displayName: Contact city
+        state:
+          type: string
+          displayName: Contact state
+        zipcode:
+          type: integer
+          displayName: Contact zipcode
+
+  communication:
+    type: array
+    displayName: Contact communication details
+    items: 
+      properties:
+        type:
+          type: string
+          displayName: Contact comminication type
+        value:
+          type: string
+          displayName: Contact phonne/email
+        preferred?:
+          type: boolean
+          displayName: true or false
+
+examples: !include ../Examples/GetContactResponseExample.raml
+              
+
+
+
+
+
+
+
+
+

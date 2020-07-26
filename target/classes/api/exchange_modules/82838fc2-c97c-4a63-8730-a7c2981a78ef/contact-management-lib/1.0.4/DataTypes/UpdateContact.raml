@@ -1,0 +1,80 @@
+#%RAML 1.0 DataType
+displayName: Update Contact information
+type: object
+properties:
+  firstName?:
+    type: string
+    displayName: Person's first name
+  lastName?:
+    type: string
+    displayName: Person's last name
+  dob?:
+    type: string
+    displayName: Person's data of birth
+  gender?:
+    type: string
+    displayName: Person's gender
+  title?:
+    type: string
+    displayName: Person's title
+  email?:
+    type: string
+  phone?: 
+    type: string
+  preferred?:
+    type: string
+  addressType?:
+    type: string
+    enum: [home, office]
+    displayName: contact type
+  addressNumber?:
+    type: integer
+    displayName: contact number
+  address?:
+    type: string
+    displayName: Street address
+  addressUnit?:
+    type: string
+    displayName: Unit number
+  addressCity?:
+    type: string
+    displayName: Contact city
+  addressState?:
+    type: string
+    displayName: Contact state
+  adressZipcode?:
+    type: integer
+    displayName: Contact zipcode
+  
+  addressType1?:
+    type: string
+    enum: [home, office]
+    displayName: contact type
+  addressNumber1?:
+    type: integer
+    displayName: contact number
+  address1?:
+    type: string
+    displayName: Street address
+  addressUnit1?:
+    type: string
+    displayName: Unit number
+  addressCity1?:
+    type: string
+    displayName: Contact city
+  addressState1?:
+    type: string
+    displayName: Contact state
+  adressZipcode1?:
+    type: integer
+    displayName: Contact zipcode
+              
+examples: !include ../Examples/CreateUpdateContactExample.raml
+
+
+
+
+
+
+
+

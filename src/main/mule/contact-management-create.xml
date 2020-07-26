@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	
+	<sub-flow name="create-contact" doc:id="81e98df7-d4cd-46d5-a404-c39771c6a4a2" >
+		<logger level="INFO" doc:name="Start" doc:id="03e03928-dd45-4d00-905a-1a8f19c59c97" message="#[attributes] - Create contact request"/>
+		<ee:transform doc:name="Create Contact Request Payload" doc:id="f136c845-f75c-4157-a8ae-0c73f930f0af" >
+			<ee:message >
+				<ee:set-payload resource="mappings/requests/contact-create.dwl" />
+			</ee:message>
+			<ee:variables >
+			</ee:variables>
+		</ee:transform>
+		<set-variable value="#[payload.uniqueId]" doc:name="Set Unique Id Variable" doc:id="04692e4c-430c-486d-a59d-2759702dc8c8" variableName="uuid"/>
+		<db:insert doc:name="Insert Contact Details into DB" doc:id="279f0712-df3c-42e5-9f62-6391c4cb8adc" config-ref="Database_Config">
+			<db:sql >INSERT INTO contacts_management.contacts ( firstName, lastName, dob, gender, title, email, phone, preferred, addressType, addressNumber, address, addressUnit, addressCity, addressState, adressZipcode, addressType1, addressNumber1, address1, addressUnit1, addressCity1, addressState1, adressZipcode1, uniqueId)
+VALUES
+(:firstName, :lastName, :dob, :gender, :title, :email, :phone, :preferred, :addressType, :addressNumber, :address, :addressUnit, :addressCity, :addressState, :adressZipcode, :addressType1, :addressNumber1, :address1, :addressUnit1, :addressCity1, :addressState1, :adressZipcode1, :uniqueId)</db:sql>
+			<db:input-parameters ><![CDATA[#[payload]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="Converting Payload to JSON" doc:id="7deb2443-51c3-4441-b576-60a7015e8552" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="contactCreatePayload" ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Insert Contact Payload" doc:id="cc9cc088-1efc-487e-a24a-ebab2c9fa28b" message="#[payload] - Contact Created]"/>
+		<db:select doc:name="Get ContactId" doc:id="83b446d8-afb9-405c-a739-a431757ea309" config-ref="Database_Config">
+			<db:sql >SELECT contactId FROM contacts_management.contacts WHERE uniqueId=:uniqueId</db:sql>
+			<db:input-parameters ><![CDATA[#[{'uniqueId' : vars.uuid}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Create Contact Response" doc:id="73171c7b-7c3d-4f29-927f-2ad7d0a64985" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	affectedRows: vars.contactCreatePayload.affectedRows,
+	contactId: payload[0].contactId
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End" doc:id="3d42d60c-4a6d-499e-9976-d817659b2860" message="#[payload] - Create contact Successful"/>
+	</sub-flow>
+	
+</mule>

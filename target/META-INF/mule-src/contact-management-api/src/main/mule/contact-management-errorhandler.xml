@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+
+	<error-handler name="contact-management-errorhandler">
+		<on-error-propagate type="CONNECTIVITY" logException="true" enableNotifications="true">
+			<flow-ref doc:name="init-error" doc:id="414292a9-9f75-46dc-92ba-8f133a4cad4d" name="init-error"/>
+			<set-variable variableName="httpStatus" value="504" doc:name="Set HTTP Status 504"/>
+			<flow-ref name="handle-error" doc:name="handle-error"/>
+		</on-error-propagate>
+		<on-error-propagate type="SECURITY" logException="true" enableNotifications="true">
+			<flow-ref doc:name="init-error" doc:id="fbcd0c93-2dac-4725-8228-1d528587396f" name="init-error"/>
+		
+			<choice>
+       			<when expression="#[error.errorType.identifier == 'UNAUTHORIZED']">
+       				<set-variable variableName="httpStatus" value="401" doc:name="Set HTTP Status 401"/>
+       			</when>
+       			<otherwise>
+       				<set-variable variableName="httpStatus" value="403" doc:name="Set HTTP Status 403"/>
+       			</otherwise>
+       		</choice>
+       		<flow-ref name="handle-error" doc:name="handle-error"/>
+		</on-error-propagate>
+		<on-error-propagate type="ANY" logException="true" enableNotifications="true">
+		    <flow-ref doc:name="init-error" doc:id="eb9aa810-d813-4e16-af40-403476878473" name="init-error"/>
+		    
+			<choice>
+        		<when expression="#[error.errorType.namespace == 'APIKIT']">
+        			<choice>
+        				<when expression="#[error.errorType.identifier == 'BAD_REQUEST']">
+        					<set-variable variableName="httpStatus" value="400" doc:name="Set HTTP Status 400"/>
+        					<set-variable value="#[error.description]" doc:name="errorDescription" doc:id="c17202ad-e1dc-4f00-816d-748054c312b0" variableName="errorDescription"/>
+        					
+							<ee:transform doc:name="Set Error" doc:id="31fe06e3-7c42-437e-88c6-59af6cd7aae4" >
+								<ee:variables >
+									<ee:set-variable resource="mappings/set-apikit-request-errorParts.dwl" variableName="errorParts" />
+								</ee:variables>								
+							</ee:transform>
+							
+							<ee:transform doc:name="Set Error" doc:id="1d73f6cc-239a-403a-aa7e-e9f1b2749f6b" >
+						
+								<ee:variables >
+									<ee:set-variable resource="mappings/set-apkit-request-errorMessage.dwl" variableName="error" />
+								</ee:variables>
+							</ee:transform>
+        				
+						</when>
+        				<when expression="#[error.errorType.identifier == 'NOT_FOUND']">
+        					<set-variable variableName="httpStatus" value="404" doc:name="Set HTTP Status 404"/>
+        				</when>
+        				<when expression="#[error.errorType.identifier == 'METHOD_NOT_ALLOWED']">
+        					<set-variable variableName="httpStatus" value="405" doc:name="Set HTTP Status 405"/>
+        				</when>
+        				<when expression="#[error.errorType.identifier == 'NOT_ACCEPTABLE']">
+        					<set-variable variableName="httpStatus" value="406" doc:name="Set HTTP Status 406"/>
+        				</when>
+        				<when expression="#[error.errorType.identifier == 'UNSUPPORTED_MEDIA_TYPE']">
+        					<set-variable variableName="httpStatus" value="415" doc:name="Set HTTP Status 415"/>
+        				</when>
+        				<when expression="#[error.errorType.identifier == 'NOT_IMPLEMENTED']">
+        					<set-variable variableName="httpStatus" value="501" doc:name="Set HTTP Status 501"/>
+        				</when>
+        			</choice>
+        		</when>
+				<when expression="#[error.errorType.namespace == 'MULE' and error.errorType.identifier == 'EXPRESSION']">
+					<set-variable value="400" doc:name="Set HTTP Status 400" doc:id="d308d246-53e6-4afc-8108-900c197b7bcf" variableName="httpStatus"/>
+				</when>
+				<when expression="#[error.errorType.namespace == 'VALIDATION']">
+					<set-variable value="400" doc:name="Set HTTP Status 400" doc:id="0d3ff8de-17a0-4a18-afc4-4020c3595863" variableName="httpStatus"/>
+				</when>
+				<when expression="#[error.errorType.namespace == 'HTTP' and error.errorType.identifier == 'BAD_REQUEST']">
+					<set-variable value="#[error.muleMessage.typedValue.errors[0]]" doc:name="errorPayload" doc:id="e526ec6f-4aba-454d-9908-be9af010ac89" variableName="errorPayload"/>
+					<ee:transform doc:name="Set HTTP status" doc:id="dceb4702-ee66-4ed7-aa42-6a9f740819a0">
+						<ee:message>
+						</ee:message>
+						<ee:variables>
+							<ee:set-variable resource="mappings/http-status-code-on-bad-request.dwl" variableName="httpStatus" />
+						</ee:variables>
+					</ee:transform>
+					<ee:transform doc:name="Set Error" doc:id="a4baa0e9-edc2-44d5-80be-eb1c665e56d3" >
+						<ee:message >
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable resource="mappings/set-bad-request-error.dwl" variableName="error" />
+						</ee:variables>
+					</ee:transform>
+				</when>
+				<when expression="#[error.errorType.namespace == 'HTTP' and error.errorType.identifier == 'TIMEOUT']">
+				   <set-variable variableName="httpStatus" value="504" doc:name="Set HTTP Status 504"/>
+				</when>
+				<otherwise>
+        			<set-variable variableName="httpStatus" value="500" doc:name="Set HTTP Status 500"/>
+        		</otherwise>
+        	</choice>
+        	<flow-ref name="handle-error" doc:name="handle-error"/>
+		</on-error-propagate>
+	</error-handler>
+	
+	<sub-flow name="init-error" doc:id="bbee749e-fbe3-4639-a2dc-ff03cfda7646" >
+		<ee:transform doc:name="Init Error" doc:id="0ad6689b-4879-4213-a615-1391a1b77767">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable resource="mappings/error-vars.dwl" variableName="error" />
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="handle-error">
+		<logger level="ERROR"  message='#[vars.baselogger default ""] type="#[error.errorType.namespace]:#[error.errorType.identifier]" error="#[error.description]" extendedError="#[((vars.errorPayload.fieldName ++ ": ") default "")  
+		        ++ (vars.errorPayload.message default "")]"' doc:name="Log Error Message" />
+		<ee:transform doc:name="Error Response" doc:id="da455a1d-1f76-4d2e-a3cf-8f93e12ff010">
+			<ee:message >
+				<ee:set-payload resource="mappings/error-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>		
+	
+</mule>

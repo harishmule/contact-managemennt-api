@@ -1,0 +1,66 @@
+{
+  "configs": [
+    "contact-management-errorhandler.xml",
+    "contact-management-common.xml",
+    "contact-management-api.xml",
+    "contact-management-create.xml",
+    "contact-management-contact-by-id.xml",
+    "contact-management-contacts.xml",
+    "contact-management-update.xml",
+    "contact-management-delete-contact-by-id.xml"
+  ],
+  "secureProperties": [],
+  "redeploymentEnabled": true,
+  "name": "com.mycompany:contact-management-api:1.0.0-SNAPSHOT",
+  "minMuleVersion": "4.2.2",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [],
+      "exportedResources": [
+        "log4j2.xml",
+        "contact-management-contact-by-id.xml",
+        "contact-management-update.xml",
+        "contact-management-create.xml",
+        "contact-management-errorhandler.xml",
+        "env/contact-management-local.properties",
+        "contact-management-contacts.xml",
+        "certs/localkeystore.jks",
+        "contact-management-api.xml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/common-error-responses/1.0.0/types/responses/error-type.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/common-error-responses/1.0.0/common-error-responses.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/common-error-responses/1.0.0/examples/responses/error-response.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/client-security/1.0.0/client-security.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/correlation-id-compliance/1.0.0/correlation-id-compliance.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/contact-management-lib.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/DataTypes/GetContact.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/DataTypes/GetAllContacts.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/DataTypes/UpdateContact.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/DataTypes/CreateContactResponse.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/DataTypes/CreateContact.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/Examples/GetContactResponseExample.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/Examples/GetAllContactsResponseExample.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/Examples/CreateUpdateContactExample.raml",
+        "api/exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/Examples/CreateContactResponse.raml",
+        "api/contact-management-api.raml",
+        "mappings/error-vars.dwl",
+        "mappings/set-bad-request-error.dwl",
+        "mappings/responses/get-contacts.dwl",
+        "mappings/responses/get-contact-by-contactId.dwl",
+        "mappings/http-status-code-on-bad-request.dwl",
+        "mappings/requests/contact-create.dwl",
+        "mappings/requests/update-contact.dwl",
+        "mappings/set-apkit-request-errorMessage.dwl",
+        "mappings/error-response.dwl",
+        "mappings/set-apikit-request-errorParts.dwl",
+        "contact-management-delete-contact-by-id.xml",
+        "contact-management-common.xml"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}

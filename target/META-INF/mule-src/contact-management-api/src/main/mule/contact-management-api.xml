@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+	
+	<!-- API-KIT Configuration -->
+	<apikit:config name="contact-management-api-config"
+		api="contact-management-api.raml"
+		outboundHeadersMapName="outboundHeaders"
+		httpStatusVarName="httpStatus" />
+	
+	<flow name="contact-management-api-main">
+		<http:listener
+			config-ref="contact-management-api-httpListenerConfig"
+			path="/api/v1/*" doc:name="HTTPS Listener">
+			<http:response
+				statusCode="#[vars.httpStatus default 200]">
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:response>
+			<http:error-response
+				statusCode="#[vars.httpStatus default 500]">
+				<http:body><![CDATA[#[payload]]]></http:body>
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:error-response>
+		</http:listener>
+		<logger level="INFO" doc:name="Base Logger"
+			doc:id="79f22e9f-2ba4-4b0d-8927-90983f684bdd"
+			message="&quot;correlationId&quot; = #[attributes.headers.'x-correlation-id' default &quot; &quot;]" />
+		<apikit:router
+			config-ref="contact-management-api-config" />
+		<error-handler ref="contact-management-errorhandler" />
+	</flow>
+	
+	<flow name="contact-management-api-console">
+		<http:listener
+			config-ref="contact-management-api-httpListenerConfig"
+			path="/console/*">
+			<http:response
+				statusCode="#[vars.httpStatus default 200]">
+				<http:headers>#[vars.outboundHeaders default {}]</http:headers>
+			</http:response>
+			<http:error-response
+				statusCode="#[vars.httpStatus default 500]">
+				<http:body>#[payload]</http:body>
+				<http:headers>#[vars.outboundHeaders default {}]</http:headers>
+			</http:error-response>
+		</http:listener>
+		<apikit:console
+			config-ref="contact-management-api-config" />
+		<error-handler ref="contact-management-errorhandler" />
+	</flow>
+	
+	<flow
+		name="put:\contacts\(contactId):application\json:contact-management-api-config">
+		<flow-ref doc:name="update-contact"
+			doc:id="e3c6b10d-e200-4566-9c3b-b3290db82b28" name="update-contact" />
+	</flow>
+	
+	<flow
+		name="delete:\contacts\(contactId):contact-management-api-config">
+		<flow-ref doc:name="delete-contact-by-id"
+			doc:id="849432cd-7011-4de8-b033-a52f25df7934"
+			name="delete-contact-by-id" />
+	</flow>
+	
+	<flow
+		name="get:\contacts\(contactId):contact-management-api-config">
+		<flow-ref doc:name="get-contact-by-id"
+			doc:id="9977d707-9291-4961-b553-79fca2a453c4"
+			name="get-contact-by-id" />
+	</flow>
+	
+	<flow name="get:\contacts:contact-management-api-config">
+		<flow-ref doc:name="get-contacts"
+			doc:id="dd933dfa-c3fb-4243-8f32-e0dd7d8d7f88" name="get-contacts" />
+	</flow>
+	
+	<flow
+		name="post:\contacts:application\json:contact-management-api-config">
+		<flow-ref doc:name="create-contact"
+			doc:id="b7180d26-0f4c-4980-b2ad-b80043c412e9" name="create-contact" />
+	</flow>
+	
+</mule>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	
+	<sub-flow name="get-contact-by-id" doc:id="81e98df7-d4cd-46d5-a404-c39771c6a4a2" >
+		<logger level="INFO" doc:name="Start" doc:id="03e03928-dd45-4d00-905a-1a8f19c59c97" message="#[attributes] - Get contact by contactId request"/>
+		<set-variable value="#[attributes.uriParams.contactId]" doc:name="Set contactId Variable" doc:id="9205d0df-56bf-4b85-aad3-7527b1cee697" variableName="contactId"/>
+		<db:select doc:name="Contact Details by ContactId Query " doc:id="0b061ce1-6dc4-4c31-8471-1a9a7150043e" config-ref="Database_Config">
+			<db:sql >SELECT * FROM contacts_management.contacts WHERE contactId=:contactId</db:sql>
+			<db:input-parameters ><![CDATA[#[{'contactId' : vars.contactId}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Contact by Contact ID Resposne" doc:id="73171c7b-7c3d-4f29-927f-2ad7d0a64985" >
+			<ee:message >
+				<ee:set-payload resource="mappings/responses/get-contact-by-contactId.dwl" />
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End" doc:id="3d42d60c-4a6d-499e-9976-d817659b2860" message="#[payload] - Get contact by conntactId Successful"/>
+	</sub-flow>
+	
+</mule>

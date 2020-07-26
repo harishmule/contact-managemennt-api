@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	
+	<sub-flow name="get-contacts" doc:id="81e98df7-d4cd-46d5-a404-c39771c6a4a2" >
+		<logger level="INFO" doc:name="Start" doc:id="03e03928-dd45-4d00-905a-1a8f19c59c97" message="#[attributes] - Get contacts request"/>
+		<db:select doc:name="Contact Details Query " doc:id="0b061ce1-6dc4-4c31-8471-1a9a7150043e" config-ref="Database_Config">
+			<db:sql >SELECT * FROM contacts_management.contacts</db:sql>
+		</db:select>
+		<ee:transform doc:name="Get All Contacts" doc:id="299f4e30-5635-4207-8e50-0e0333c50a5f" >
+			<ee:message >
+				<ee:set-payload resource="mappings/responses/get-contacts.dwl" />
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End" doc:id="3d42d60c-4a6d-499e-9976-d817659b2860" message="#[payload] - Get All contacts Successful"/>
+	</sub-flow>
+	
+</mule>

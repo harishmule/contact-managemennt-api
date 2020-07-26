@@ -1,0 +1,244 @@
+#%RAML 1.0 Library
+usage: |
+  All end points must report error situations to the caller. This is the common set of errors reported by each end point and should be included with all APIs that will perform default error handling.
+types:
+  error-response: !include types/responses/error-type.raml
+
+resourceTypes: 
+  standard_endpoint:
+    description: Standard HTTP error responses for API end points
+    get?:
+      responses:
+        400:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        401:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        403:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        404:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        405:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        406:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        415:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        500:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        504:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+    post?:
+      responses:
+        400:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        401:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        403:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        404:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        405:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        406:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        415:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        500:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        504:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+    patch?:
+      responses:
+        400:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        401:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        403:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        404:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        405:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        406:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        415:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        500:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        504:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+    put?:
+      responses:
+        400:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        401:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        403:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        404:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        405:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        406:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        415:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        500:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        504:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+    delete?:
+      responses:
+        400:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        401:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        403:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        404:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        405:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        406:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        415:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        500:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml
+        504:
+          body:
+            application/json:
+              type: error-response
+              example: !include examples/responses/error-response.raml

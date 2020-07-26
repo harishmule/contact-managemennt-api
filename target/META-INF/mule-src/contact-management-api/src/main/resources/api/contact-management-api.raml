@@ -1,0 +1,78 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/9618c294-5e94-4f3f-a4ab-5d5690193070/ # 
+title: contact-management-api
+description: This API is used to manage the contact information
+version: v1
+
+mediaType: [application/json]
+
+uses:
+  contactLib: exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/contact-management-lib/1.0.4/contact-management-lib.raml
+  commonErrors: exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/common-error-responses/1.0.0/common-error-responses.raml
+
+traits:
+  correlationId: !include  exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/correlation-id-compliance/1.0.0/correlation-id-compliance.raml
+  clientSecurity: !include exchange_modules/82838fc2-c97c-4a63-8730-a7c2981a78ef/client-security/1.0.0/client-security.raml
+
+/contacts:
+  type: commonErrors.standard_endpoint
+  is: [correlationId, clientSecurity]
+  displayName: contact managemnet
+  post:
+    displayName: Create contact
+    body:
+      application/json:
+          type: contactLib.CreateContact
+    responses:
+      201:
+        body:
+          application/json:
+            type: contactLib.CreateContactResponse
+  get:
+    displayName: Get all contacts
+    responses:
+      200:
+        body:
+          application/json:
+            type: contactLib.GetAllContacts
+
+  /{contactId}:
+    uriParameters:
+      contactId:
+        description: Unique id of the contact
+        type: integer
+        example: 123233
+    type: commonErrors.standard_endpoint
+    is: [correlationId, clientSecurity]
+    displayName: Get contact details by usinng contactId
+    get:
+      displayName: Contact details
+      responses:
+        200:
+          body:
+            application/json:
+              type: contactLib.GetContact 
+
+    put:
+      displayName: Update contact details
+      body:
+        application/json:
+            type: contactLib.UpdateContact 
+      responses:
+        200:
+          body:
+            application/json:
+              example: {
+                  "message": "contact 2 updated"
+                }
+                
+    delete:
+      displayName: Delete contact
+      responses:
+        200:
+          body:
+            application/json:
+              example: {
+                  "message": "contact 2 deleted"
+                }
+
