@@ -222,5 +222,5 @@ REST SERVICES (Please check the files in email for request responses and postman
 	* Used secure property place holder.
 	* Encrypted the port (8080).
 	* For update and create requests, the dwl files are saved in mappings folder.
-	* Attached screenshots of the responses and files in email
+	* Attached screenshots of the responses and SQL files in email
 
