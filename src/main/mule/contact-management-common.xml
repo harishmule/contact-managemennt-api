@@ -32,7 +32,7 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	<secure-properties:config
 		name="Secure_Properties_Config" doc:name="Secure Properties Config"
 		doc:id="ade1acbd-3c18-40df-8233-a5d5f1b953e3"
-		file="env/contact-management-local.properties" key="${encryption.key}">
+		file="env/contact-management-${mule.env}.properties" key="${encryption.key}">
 		<secure-properties:encrypt
 			algorithm="Twofish" />
 	</secure-properties:config>
